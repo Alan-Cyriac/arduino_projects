@@ -1,6 +1,7 @@
 #include <ArduinoJson.h>
 
 String jsonGenerator(const char *data);
+const char* jsonDeserialize(String payload);
 
 StaticJsonDocument<256> doc;
 void setup() {
@@ -28,8 +29,9 @@ String jsonGenerator(const char *data){
 
 const char* jsonDeserialize(String payload){
     Serial.println("Starting JSON Serialization...");
-    StaticJsonDocument<256> doc;
     DeserializationError error =  deserializeJson(doc,payload);
+    Serial.print("payload Result = ");
+    Serial.println(payload);
     const char *result;
     if(error) {
       Serial.print("deserializeJson() failed with code ");
@@ -37,9 +39,10 @@ const char* jsonDeserialize(String payload){
       result = error.c_str();
     } else {
       Serial.println("JSON OK");
-      result = (const char*)doc["result"];
+//      result = doc["id_number"].as<String>();
+      result = (const char*)doc["id_number"];
     }
-//    const char *response = 
+    Serial.print("Dserialized Result = ");
     Serial.println(result);
     return result;
 }
